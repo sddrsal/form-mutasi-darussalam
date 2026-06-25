@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Rekomendasi Mutasi Masuk - SD Darussalam Blokagung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --biru-tua:#0f4c75;
+    --biru:#1e88a8;
+    --tosca:#3fc1c9;
+    --tosca-muda:#7be0d6;
+    --putih:#ffffff;
+    --abu-teks:#475569;
+    --abu-border:#dde4ec;
+    --merah:#e63946;
+    --hijau:#2a9d8f;
+    --radius:16px;
+    --shadow-card: 0 20px 50px -12px rgba(15,76,117,0.35), 0 8px 16px -8px rgba(15,76,117,0.15);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--biru-tua) 0%, var(--biru) 45%, var(--tosca) 80%, var(--tosca-muda) 100%);
+    background-attachment:fixed;
+    color:#1e293b;
+    padding: 32px 16px 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* Dekorasi lingkaran lembut di background */
+  body::before, body::after{
+    content:"";
+    position:fixed;
+    border-radius:50%;
+    background: rgba(255,255,255,0.08);
+    z-index:0;
+    pointer-events:none;
+  }
+  body::before{
+    width:420px; height:420px;
+    top:-120px; left:-140px;
+  }
+  body::after{
+    width:320px; height:320px;
+    bottom:-100px; right:-100px;
+  }
+
+  .header{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    color:#fff;
+    margin-bottom:28px;
+    max-width:680px;
+  }
+  .header .logo-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .header .logo-circle{
+    width:46px;
+    height:46px;
+    background:rgba(255,255,255,0.18);
+    border:2px solid rgba(255,255,255,0.5);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+  }
+  .header h1{
+    font-size:1.5rem;
+    font-weight:700;
+    margin:4px 0 2px;
+    letter-spacing:0.2px;
+  }
+  .header h2{
+    font-size:1.05rem;
+    font-weight:600;
+    margin:0 0 6px;
+    color:#eafffb;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+  }
+  .header p{
+    font-size:0.92rem;
+    font-weight:500;
+    margin:0;
+    opacity:0.92;
+    background: rgba(255,255,255,0.15);
+    display:inline-block;
+    padding:4px 16px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.35);
+  }
+
+  .card{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:680px;
+    background: var(--putih);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 32px 28px 36px;
+  }
+
+  .section-title{
+    font-size:0.78rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:var(--biru);
+    margin: 26px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title:first-child{margin-top:0;}
+  .section-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: linear-gradient(to right, var(--abu-border), transparent);
+  }
+
+  form{display:flex; flex-direction:column; gap:16px;}
+
+  .row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:16px;
+  }
+
+  .field{display:flex; flex-direction:column; gap:6px;}
+
+  .field label{
+    font-size:0.84rem;
+    font-weight:600;
+    color:#334155;
+  }
+  .field label .req{color:var(--merah); margin-left:2px;}
+
+  .field input,
+  .field select{
+    font-family:'Poppins', sans-serif;
+    font-size:0.92rem;
+    padding:11px 14px;
+    border:1.5px solid var(--abu-border);
+    border-radius:10px;
+    background:#f8fafc;
+    color:#1e293b;
+    outline:none;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    width:100%;
+  }
+  .field input::placeholder{color:#9aa7b8; text-transform:none;}
+
+  /* Huruf kapital otomatis untuk semua input teks (tidak berlaku untuk tanggal) */
+  .field input[type="text"],
+  .field input[type="tel"]{
+    text-transform: uppercase;
+  }
+
+  .field input:focus,
+  .field select:focus{
+    border-color: var(--tosca);
+    background:#fff;
+    box-shadow: 0 0 0 4px rgba(63,193,201,0.15);
+  }
+
+  .field input.invalid,
+  .field select.invalid{
+    border-color: var(--merah);
+    background:#fff5f5;
+  }
+
+  .error-msg{
+    font-size:0.74rem;
+    color:var(--merah);
+    min-height:14px;
+    display:none;
+  }
+  .error-msg.show{display:block;}
+
+  select{appearance:none; cursor:pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23475569' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+    background-repeat:no-repeat;
+    background-position: right 14px center;
+    padding-right:36px;
+  }
+
+  .btn-submit{
+    margin-top:10px;
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    font-family:'Poppins', sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    letter-spacing:0.3px;
+    color:#fff;
+    cursor:pointer;
+    background: linear-gradient(135deg, var(--biru-tua), var(--biru), var(--tosca));
+    background-size:160% 160%;
+    background-position: 0% 50%;
+    box-shadow: 0 10px 24px -6px rgba(15,76,117,0.5);
+    transition: background-position .5s ease, transform .15s ease, box-shadow .25s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .btn-submit:hover{
+    background-position: 100% 50%;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -6px rgba(15,76,117,0.6);
+  }
+  .btn-submit:active{transform: translateY(0px) scale(0.99);}
+  .btn-submit:disabled{
+    opacity:0.75;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .spinner{
+    width:18px; height:18px;
+    border-radius:50%;
+    border:2.5px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+    animation: spin 0.7s linear infinite;
+    display:none;
+  }
+  .spinner.show{display:inline-block;}
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* Overlay loading saat proses simpan */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background: rgba(15,76,117,0.55);
+    backdrop-filter: blur(3px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .overlay-box{
+    background:#fff;
+    border-radius:16px;
+    padding:28px 36px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
+  .overlay-spinner{
+    width:42px; height:42px;
+    border-radius:50%;
+    border:4px solid var(--abu-border);
+    border-top-color: var(--biru);
+    animation: spin 0.8s linear infinite;
+  }
+  .overlay-box span{
+    font-size:0.88rem;
+    font-weight:600;
+    color:var(--biru-tua);
+  }
+
+  /* Toast notifikasi */
+  .toast{
+    position:fixed;
+    top:24px;
+    left:50%;
+    transform: translateX(-50%) translateY(-20px);
+    min-width:280px;
+    max-width:90vw;
+    background:#fff;
+    border-radius:12px;
+    padding:16px 20px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+    z-index:60;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .3s ease, transform .3s ease;
+    border-left:5px solid var(--hijau);
+  }
+  .toast.show{
+    opacity:1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
+  .toast.error{border-left-color: var(--merah);}
+  .toast .icon{
+    font-size:1.3rem;
+    line-height:1;
+  }
+  .toast .text{
+    font-size:0.88rem;
+    font-weight:600;
+    color:#1e293b;
+  }
+  .toast .text small{
+    display:block;
+    font-weight:400;
+    color:#64748b;
+    margin-top:2px;
+  }
+
+  .footer-note{
+    text-align:center;
+    color:#eafffb;
+    font-size:0.78rem;
+    margin-top:24px;
+    opacity:0.85;
+    z-index:1;
+  }
+
+  @media (max-width: 560px){
+    .row{grid-template-columns: 1fr;}
+    .card{padding:26px 18px 30px;}
+    .header h1{font-size:1.25rem;}
+    .header h2{font-size:0.92rem;}
+    body{padding:24px 12px 50px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-circle">🏫</div>
+    </div>
+    <h1>Form Rekomendasi Mutasi Masuk</h1>
+    <h2>SD Darussalam Blokagung</h2>
+    <p>Tahun Pelajaran 2025/2026</p>
+  </div>
+
+  <div class="card">
+    <form id="formMutasi" novalidate>
+
+      <div class="section-title">Data Siswa</div>
+      <div class="field">
+        <label for="nama">Nama Lengkap<span class="req">*</span></label>
+        <input type="text" id="nama" name="nama" placeholder="Contoh: Ahmad Fauzan Ramadhan">
+        <span class="error-msg" id="err-nama">Nama lengkap wajib diisi.</span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="lp">L/P<span class="req">*</span></label>
+          <select id="lp" name="lp">
+            <option value="">-- Pilih --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+          <span class="error-msg" id="err-lp">Pilih jenis kelamin.</span>
+        </div>
+        <div class="field">
+          <label for="kelas">Kelas Tujuan<span class="req">*</span></label>
+          <select id="kelas" name="kelas">
+            <option value="">-- Pilih --</option>
+            <option value="1">Kelas 1</option>
+            <option value="2">Kelas 2</option>
+            <option value="3">Kelas 3</option>
+            <option value="4">Kelas 4</option>
+            <option value="5">Kelas 5</option>
+            <option value="6">Kelas 6</option>
+          </select>
+          <span class="error-msg" id="err-kelas">Pilih kelas tujuan.</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="tempatLahir">Tempat Lahir<span class="req">*</span></label>
+          <input type="text" id="tempatLahir" name="tempatLahir" placeholder="Contoh: Banyuwangi">
+          <span class="error-msg" id="err-tempatLahir">Tempat lahir wajib diisi.</span>
+        </div>
+        <div class="field">
+          <label for="tanggalLahir">Tanggal Lahir<span class="req">*</span></label>
+          <input type="date" id="tanggalLahir" name="tanggalLahir">
+          <span class="error-msg" id="err-tanggalLahir">Tanggal lahir wajib diisi.</span>
+        </div>
+      </div>
+
+      <div class="section-title">Data Sekolah Asal</div>
+      <div class="row">
+        <div class="field">
+          <label for="nisn">NISN <span style="color:#94a3b8; font-weight:500;">(opsional)</span></label>
+          <input type="text" id="nisn" name="nisn" inputmode="numeric" placeholder="10 digit NISN">
+          <span class="error-msg" id="err-nisn">Format NISN tidak valid.</span>
+        </div>
+        <div class="field">
+          <label for="indukAsal">No Induk Asal <span style="color:#94a3b8; font-weight:500;">(opsional)</span></label>
+          <input type="text" id="indukAsal" name="indukAsal" placeholder="Nomor induk di sekolah asal">
+          <span class="error-msg" id="err-indukAsal">Format tidak valid.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="asalSekolah">Nama Sekolah Asal<span class="req">*</span></label>
+        <input type="text" id="asalSekolah" name="asalSekolah" placeholder="Contoh: SD Negeri 1 Cluring">
+        <span class="error-msg" id="err-asalSekolah">Nama sekolah asal wajib diisi.</span>
+      </div>
+
+      <div class="field">
+        <label for="alamatSekolah">Alamat Sekolah Asal<span class="req">*</span></label>
+        <input type="text" id="alamatSekolah" name="alamatSekolah" placeholder="Alamat lengkap sekolah asal">
+        <span class="error-msg" id="err-alamatSekolah">Alamat sekolah wajib diisi.</span>
+      </div>
+
+      <div class="section-title">Data Orang Tua / Wali</div>
+      <div class="row">
+        <div class="field">
+          <label for="namaAyah">Nama Ayah<span class="req">*</span></label>
+          <input type="text" id="namaAyah" name="namaAyah" placeholder="Nama lengkap ayah">
+          <span class="error-msg" id="err-namaAyah">Nama ayah wajib diisi.</span>
+        </div>
+        <div class="field">
+          <label for="namaIbu">Nama Ibu<span class="req">*</span></label>
+          <input type="text" id="namaIbu" name="namaIbu" placeholder="Nama lengkap ibu">
+          <span class="error-msg" id="err-namaIbu">Nama ibu wajib diisi.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="alamat">Alamat Lengkap<span class="req">*</span></label>
+        <input type="text" id="alamat" name="alamat" placeholder="Alamat domisili lengkap">
+        <span class="error-msg" id="err-alamat">Alamat lengkap wajib diisi.</span>
+      </div>
+
+      <div class="field">
+        <label for="noWhatsapp">Nomor WhatsApp Wali Murid<span class="req">*</span></label>
+        <input type="tel" id="noWhatsapp" name="noWhatsapp" inputmode="numeric" placeholder="Contoh: 081234567890">
+        <span class="error-msg" id="err-noWhatsapp">Nomor WhatsApp wajib diisi dengan benar.</span>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="spinner" id="btnSpinner"></span>
+        <span id="btnText">💾 Simpan Data</span>
+      </button>
+    </form>
+  </div>
+
+  <p class="footer-note">© 2025/2026 SD Darussalam Blokagung — Form Rekomendasi Mutasi Masuk</p>
+
+  <!-- Overlay loading -->
+  <div class="overlay" id="overlay">
+    <div class="overlay-box">
+      <div class="overlay-spinner"></div>
+      <span>Menyimpan data, mohon tunggu...</span>
+    </div>
+  </div>
+
+  <!-- Toast notifikasi -->
+  <div class="toast" id="toast">
+    <div class="icon" id="toastIcon">✅</div>
+    <div class="text" id="toastText">Berhasil<small id="toastSub"></small></div>
+  </div>
+
+<script>
+  // =====================================================================
+  // GANTI URL DI BAWAH INI dengan URL Web App hasil deploy Google Apps Script
+  // =====================================================================
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxdRSbRfMTbRD7_sOfLD9sSARO31tAxNBIDJRvK4_lmGQyF_ah9b19O-UtajDWSXW87/exec";
+
+  const form = document.getElementById('formMutasi');
+  const btnSubmit = document.getElementById('btnSubmit');
+  const btnSpinner = document.getElementById('btnSpinner');
+  const btnText = document.getElementById('btnText');
+  const overlay = document.getElementById('overlay');
+  const toast = document.getElementById('toast');
+  const toastIcon = document.getElementById('toastIcon');
+  const toastText = document.getElementById('toastText');
+  const toastSub = document.getElementById('toastSub');
+
+  // Field yang WAJIB diisi (NISN & No Induk Asal sengaja tidak wajib)
+  const fields = [
+    'nama','lp','tempatLahir','tanggalLahir','kelas',
+    'asalSekolah','alamatSekolah',
+    'namaAyah','namaIbu','alamat','noWhatsapp'
+  ];
+
+  // Field opsional yang tetap perlu reset status error-nya saat user mengetik
+  const optionalFields = ['nisn','indukAsal'];
+
+  // Semua field teks yang otomatis diubah jadi HURUF KAPITAL saat diketik
+  const uppercaseFields = [
+    'nama','tempatLahir','nisn','indukAsal','asalSekolah',
+    'alamatSekolah','namaAyah','namaIbu','alamat'
+  ];
+  uppercaseFields.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      const pos = el.selectionStart;
+      el.value = el.value.toUpperCase();
+      el.setSelectionRange(pos, pos);
+    });
+  });
+
+  function showError(id, show){
+    const input = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if(show){
+      input.classList.add('invalid');
+      if(err) err.classList.add('show');
+    } else {
+      input.classList.remove('invalid');
+      if(err) err.classList.remove('show');
+    }
+  }
+
+  function validateForm(){
+    let valid = true;
+
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      const val = el.value.trim();
+      if(!val){
+        showError(id, true);
+        valid = false;
+      } else {
+        showError(id, false);
+      }
+    });
+
+    // Validasi khusus nomor WhatsApp (hanya angka, minimal 9 digit)
+    const wa = document.getElementById('noWhatsapp').value.trim();
+    if(wa && !/^[0-9+ ]{9,15}$/.test(wa)){
+      showError('noWhatsapp', true);
+      valid = false;
+    }
+
+    // NISN bersifat opsional — divalidasi hanya jika diisi
+    const nisn = document.getElementById('nisn').value.trim();
+    if(nisn && !/^[0-9]{5,15}$/.test(nisn)){
+      showError('nisn', true);
+      valid = false;
+    } else {
+      showError('nisn', false);
+    }
+
+    // No Induk Asal bersifat opsional — tidak ada validasi format khusus
+    showError('indukAsal', false);
+
+    return valid;
+  }
+
+  // Hilangkan error saat user mulai mengetik ulang
+  [...fields, ...optionalFields].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => showError(id, false));
+    el.addEventListener('change', () => showError(id, false));
+  });
+
+  function showToast(success, message, sub){
+    toast.classList.remove('error');
+    if(!success) toast.classList.add('error');
+    toastIcon.textContent = success ? '✅' : '⚠️';
+    toastText.firstChild ? (toastText.childNodes[0].textContent = message) : null;
+    toastText.innerHTML = message + (sub ? '<small></small>' : '');
+    if(sub){
+      toastText.querySelector('small').textContent = sub;
+    }
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 4000);
+  }
+
+  function setLoading(isLoading){
+    btnSubmit.disabled = isLoading;
+    btnSpinner.classList.toggle('show', isLoading);
+    btnText.textContent = isLoading ? 'Menyimpan...' : '💾 Kirim Rekom';
+    overlay.classList.toggle('show', isLoading);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    if(!validateForm()){
+      showToast(false, 'Periksa kembali data Anda', 'Beberapa field wajib belum terisi dengan benar.');
+      return;
+    }
+
+    const payload = {
+      nama: document.getElementById('nama').value.trim(),
+      lp: document.getElementById('lp').value,
+      tempatLahir: document.getElementById('tempatLahir').value.trim(),
+      tanggalLahir: document.getElementById('tanggalLahir').value,
+      kelas: document.getElementById('kelas').value,
+      nisn: document.getElementById('nisn').value.trim(),
+      indukAsal: document.getElementById('indukAsal').value.trim(),
+      asalSekolah: document.getElementById('asalSekolah').value.trim(),
+      alamatSekolah: document.getElementById('alamatSekolah').value.trim(),
+      namaAyah: document.getElementById('namaAyah').value.trim(),
+      namaIbu: document.getElementById('namaIbu').value.trim(),
+      alamat: document.getElementById('alamat').value.trim(),
+      noWhatsapp: document.getElementById('noWhatsapp').value.trim()
+    };
+
+    setLoading(true);
+
+    fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      setLoading(false);
+      if(data.status === 'success'){
+        showToast(true, 'Data berhasil disimpan', 'Nomor urut: ' + data.nomor);
+        form.reset();
+        [...fields, ...optionalFields].forEach(id => showError(id, false));
+      } else {
+        showToast(false, 'Gagal menyimpan data', data.message || 'Silakan coba lagi.');
+      }
+    })
+    .catch(err => {
+      setLoading(false);
+      showToast(false, 'Gagal menyimpan data', 'Periksa koneksi internet Anda lalu coba lagi.');
+    });
+  });
+</script>
+
+</body>
+</html>
